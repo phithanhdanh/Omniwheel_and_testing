@@ -18,14 +18,12 @@ USB Usb;
 //USBHub Hub1(&Usb); // Some dongles have a hub inside
 BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 
-/* You can create the instance of the PS4BT class in two ways */
-// This will start an inquiry and then pair with the PS4 controller - you only have to do this once
-// You will need to hold down the PS and Share button at the same time, the PS4 controller will then start to blink rapidly indicating that it is in pairing mode
-PS4BT PS4(&Btd, PAIR); //Ket noi lan dau bang cach nhan nut share và nut PS.
+//Ket noi lan dau bang cach nhan nut share và nut PS.
+PS4BT PS4(&Btd, PAIR);
+//Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
+//PS4BT PS4(&Btd);
 
-// After that you can simply create the instance like so and then press the PS button on the device
-//PS4BT PS4(&Btd); //Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
-
+#include "Decorations.h"
 #include "Wheels.h"
 #include "Buttons.h"
 
@@ -55,6 +53,11 @@ void loop() {
     PrintSerialMonitor();
 */
   if (PS4.connected()) {
-    delay(1000);
+    LeftJoystick();
+    RightJoystick();
+    if (PS4.getButtonClick(PS)) {
+      Serial.print(F("\r\nPS"));
+      PS4.disconnect();
+    }
   }
 }

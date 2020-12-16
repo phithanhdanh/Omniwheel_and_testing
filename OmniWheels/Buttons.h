@@ -19,20 +19,20 @@ int RightJStt = 0;
 
 //Handling Button Up----------------------------------------------
 void ButtonUp(){
-      if (PS4.getButtonPress(UP)) {
-          Serial.print(F("\r\nUp"));
-          PS4.setLed(Red);
-        while ( UpStt != 1){
-         SetSpeed(-50,50,-50,50,2000);
+   if (PS4.getButtonPress(UP)) {
+      Serial.print(F("\r\nUp"));
+      PS4.setLed(Red);
+      while ( UpStt != 1){
+          SetSpeed(-50,50,-50,50,2000);
           UpStt = 1;
-        }
       }
-      else {
-        while( UpStt != 0){
-         SetSpeed(0,0,0,0,2000);
+    }
+    else {
+      while( UpStt != 0){
+          SetSpeed(0,0,0,0,2000);
           UpStt = 0;
-        }
       }
+    }
 }
 
 //Handling Button Down--------------------------------------------
