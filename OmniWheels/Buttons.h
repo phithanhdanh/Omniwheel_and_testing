@@ -22,13 +22,13 @@ void ButtonUp(){
    if (PS4.getButtonPress(UP)) {
       Serial.print(F("\r\nUp"));
       PS4.setLed(Red);
-      while ( UpStt != 1){
-          SetSpeed(-50,50,-50,50,2000);
+      if ( UpStt != 1){
+          SetSpeed(-50,-50,50,50,2000);
           UpStt = 1;
       }
     }
     else {
-      while( UpStt != 0){
+      if( UpStt != 0){
           SetSpeed(0,0,0,0,2000);
           UpStt = 0;
       }
@@ -40,13 +40,13 @@ void ButtonDown(){
      if (PS4.getButtonPress(DOWN)) {
           Serial.print(F("\r\nDown"));
           PS4.setLed(Yellow);
-        while ( DownStt != 1){
-         SetSpeed(50,-50,50,-50,2000);
+        if ( DownStt != 1){
+         SetSpeed(50,50,-50,-50,2000);
           DownStt = 1;
         } 
       }
        else{
-        while ( DownStt != 0){
+        if ( DownStt != 0){
          SetSpeed(0,0,0,0,2000);
           DownStt = 0;
         }
@@ -58,14 +58,14 @@ void ButtonRight(){
         if (PS4.getButtonPress(RIGHT)) {
           Serial.print(F("\r\nRight"));
           PS4.setLed(Blue);
-        while ( RightStt != 1){
-        SetSpeed(-50,-50,50,50,2000);  
+        if ( RightStt != 1){
+        SetSpeed(50,-50,-50,50,2000);  
           RightStt = 1;
         }   
       }
 
       else {
-        while( RightStt != 0){
+        if( RightStt != 0){
          SetSpeed(0,0,0,0,2000);
           RightStt = 0;
         }
@@ -77,13 +77,13 @@ void ButtonLeft(){
         if (PS4.getButtonPress(LEFT)) {
         Serial.print(F("\r\nLeft"));
         PS4.setLed(Green);
-        while ( LeftStt != 1){
-         SetSpeed(50,50,-50,-50,2000);
+        if ( LeftStt != 1){
+         SetSpeed(-50,50,50,-50,2000);
           LeftStt = 1;
         }
       }
       else {
-        while( LeftStt != 0){
+        if( LeftStt != 0){
          SetSpeed(0,0,0,0,2000);
           LeftStt = 0;
         }
@@ -130,10 +130,10 @@ void CircleButton(){
 void CrossButton(){
         if (PS4.getButtonPress(CROSS)) {
           Serial.print(F("\r\nCross"));
-        PS4.setLedFlash(10, 10); // Set it to blink rapidly
+        //PS4.setLedFlash(10, 10); // Set it to blink rapidly
         while ( CrStt != 1){
           Serial.print(F("\r\nCross"));
-          SetSpeed(200,0,0,0,2000);
+          SetSpeed(0,0,0,0,2000);
           CrStt = 1;
         }
       }
@@ -167,9 +167,9 @@ void SquareButton(){
 void L2Button(){
        if (PS4.getButtonPress(L2)) {
         Serial.print(F("\r\nL2: "));
-      Serial.print(PS4.getAnalogButton(L2));
+        Serial.print(PS4.getAnalogButton(L2));
         while ( L2Stt != 1){      
-          SetSpeed(50,50,50,50,2000);  
+          SetSpeed(0,0,0,0,scaled(PS4.getAnalogButton(L2),255,20000));  
           L2Stt = 1;
         }
       }
@@ -216,36 +216,38 @@ void JoystickConverter(int x, int y, int *a, int *b, int *c, int *d){
 }
 
 void LeftJoystick(){
-  if (PS4.getAnalogHat(LeftHatX) > 137 || PS4.getAnalogHat(LeftHatX) < 117 || PS4.getAnalogHat(LeftHatY) > 137 || PS4.getAnalogHat(LeftHatY) < 117){
+  int x = PS4.getAnalogHat(LeftHatX), y = PS4.getAnalogHat(LeftHatY);
+  if (x > 137 || x < 117 || y > 137 || y < 117){
       Serial.print(F("\r\nLeftHatX: "));
-      Serial.print(PS4.getAnalogHat(LeftHatX));
+      Serial.print(x);
       Serial.print(F("\tLeftHatY: "));
-      Serial.print(PS4.getAnalogHat(LeftHatY));
+      Serial.print(y);
       int a,b,c,d;
-      JoystickConverter(PS4.getAnalogHat(LeftHatX),PS4.getAnalogHat(LeftHatY),&a,&b,&c,&d);
-      SetSpeed(c,d,b,a,2000);
+      JoystickConverter(x,y,&a,&b,&c,&d);
+      SetSpeed(c,b,d,a,2000);
       LeftJStt = 1;
       }
       else {
-        while( LeftJStt != 0){
+        if( LeftJStt != 0){
           SetSpeed(0,0,0,0,2000);       
           LeftJStt = 0;
         }
       }
 }
 void RightJoystick(){
-  if (PS4.getAnalogHat(RightHatX) > 137 || PS4.getAnalogHat(RightHatX) < 117 || PS4.getAnalogHat(RightHatY) > 137 || PS4.getAnalogHat(RightHatY) < 117) {
+  int x = PS4.getAnalogHat(RightHatX), y = PS4.getAnalogHat(RightHatY);
+  if (x > 137 || x < 117 || y > 137 || y < 117){
       Serial.print(F("\r\nRightHatX: "));
-      Serial.print(PS4.getAnalogHat(RightHatX));
+      Serial.print(x);
       Serial.print(F("\tRightHatY: "));
-      Serial.print(PS4.getAnalogHat(RightHatY));
+      Serial.print(y);
       int a,b,c,d;
-      JoystickConverter(PS4.getAnalogHat(RightHatX),PS4.getAnalogHat(RightHatY),&a,&b,&c,&d);
-      SetSpeed(c,d,b,a,20000);
+      JoystickConverter(x,y,&a,&b,&c,&d);
+      SetSpeed(c,b,d,a,20000);
       RightJStt = 1;
       }
       else {
-        while( RightJStt != 0){
+        if( RightJStt != 0){
           SetSpeed(0,0,0,0,20000);       
           RightJStt = 0;
         }

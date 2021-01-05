@@ -8,20 +8,26 @@ SoftwareSerial mySerial(12, 13); //Define PIN12 & PIN13 as software UART
 #include <spi4teensy3.h>
 #endif
 #include <SPI.h>
-/* khong hieu sao co cai nay:
-unsigned long previousMillis = 0;        // will store last time LED was updated
 
-// constants won't change:
-const long interval = 4000;           // interval at which to blink (milliseconds)
-*/
 USB Usb;
 //USBHub Hub1(&Usb); // Some dongles have a hub inside
 BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 
 //Ket noi lan dau bang cach nhan nut share và nut PS.
-PS4BT PS4(&Btd, PAIR);
+//PS4BT PS4(&Btd, PAIR);
 //Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
-//PS4BT PS4(&Btd);
+PS4BT PS4(&Btd);
+
+/*#include <PS4USB.h>
+
+// Satisfy the IDE, which needs to see the include statment in the ino too.
+#ifdef dobogusinclude
+#include <spi4teensy3.h>
+#endif
+#include <SPI.h>
+
+USB Usb;
+PS4USB PS4(&Usb);*/
 
 #include "Decorations.h"
 #include "Wheels.h"
@@ -43,15 +49,9 @@ void setup() {
 }
 
 void loop() {
+  
+  //Dualshock4 handling----------------------
   Usb.Task();  
-/* Nay o dau ra khong biet:
-  unsigned long currentMillis = millis();
-  if (mySerial.available()) {
-    Serial.write(mySerial.read());
-   // Serial.write("hello");
-  }
-    PrintSerialMonitor();
-*/
   if (PS4.connected()) {
     LeftJoystick();
     RightJoystick();
@@ -59,5 +59,16 @@ void loop() {
       Serial.print(F("\r\nPS"));
       PS4.disconnect();
     }
+    else{
+      ButtonUp();
+      ButtonDown();
+      ButtonRight();
+      ButtonLeft();
+      L2Button();
+      CrossButton();
+    }
   }
+  else SetSpeed(0,0,0,0,20000);
+  //-----------------------------------------
+  
 }
