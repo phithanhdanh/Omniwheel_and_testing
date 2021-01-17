@@ -18,17 +18,6 @@ BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 //Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
 PS4BT PS4(&Btd);
 
-/*#include <PS4USB.h>
-
-// Satisfy the IDE, which needs to see the include statment in the ino too.
-#ifdef dobogusinclude
-#include <spi4teensy3.h>
-#endif
-#include <SPI.h>
-
-USB Usb;
-PS4USB PS4(&Usb);*/
-
 #include "Decorations.h"
 #include "Wheels.h"
 #include "Buttons.h"
@@ -53,20 +42,24 @@ void loop() {
   //Dualshock4 handling----------------------
   Usb.Task();  
   if (PS4.connected()) {
-    LeftJoystick();
-    RightJoystick();
+    int N1=0,N2=0,N3=0,N4=0,accelerate=20000;
+    LeftJoystick(&N1,&N2,&N3,&N4);
+    RightJoystick(&N1,&N2,&N3,&N4);
     if (PS4.getButtonClick(PS)) {
       Serial.print(F("\r\nPS"));
       PS4.disconnect();
     }
     else{
-      ButtonUp();
-      ButtonDown();
-      ButtonRight();
-      ButtonLeft();
+      ButtonUp(&N1,&N2,&N3,&N4);
+      ButtonDown(&N1,&N2,&N3,&N4);
+      ButtonRight(&N1,&N2,&N3,&N4);
+      ButtonLeft(&N1,&N2,&N3,&N4);
+      CrossButton(&N1,&N2,&N3,&N4);
       L2Button();
-      CrossButton();
     }
+    if (N1 || N2 || N3 || N4) accelerate=2000;
+    else accelerate = 20000;
+    SetSpeed(N1,N2,N3,N4,accelerate);
   }
   else SetSpeed(0,0,0,0,20000);
   //-----------------------------------------
