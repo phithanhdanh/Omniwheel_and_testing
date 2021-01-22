@@ -38,13 +38,14 @@ void setup() {
   }
   Serial.print(F("\r\nPS4 Bluetooth Library Started"));
 }
+  int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
 
 void loop() {
   
   //Dualshock4 handling----------------------
   Usb.Task();
   current = millis();
-  int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
+  //int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
   if (PS4.connected()) {    
       LeftJoystick(&N1,&N2,&N3,&N4);
       RightJoystick(&N1,&N2,&N3,&N4);

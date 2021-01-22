@@ -20,12 +20,10 @@ int RightJStt = 0;
 //Handling Button Up----------------------------------------------
 void ButtonUp(int *N1, int* N2, int*N3, int*N4){
    if (PS4.getButtonPress(UP)) {
-      Serial.print(F("\r\nUp"));
-      PS4.setLed(Red);
-      if ( UpStt != 1){
+      //Serial.print(F("\r\nUp"));
+      //PS4.setLed(Red);
           *N1 = -50; *N2 = -50; *N3 = 50; *N4 = 50;
           UpStt = 1;
-      }
     }
     else {
       if( UpStt != 0){
@@ -38,12 +36,10 @@ void ButtonUp(int *N1, int* N2, int*N3, int*N4){
 //Handling Button Down--------------------------------------------
 void ButtonDown(int *N1, int* N2, int*N3, int*N4){
      if (PS4.getButtonPress(DOWN)) {
-          Serial.print(F("\r\nDown"));
+          //Serial.print(F("\r\nDown"));
           PS4.setLed(Yellow);
-        if ( DownStt != 1){
           *N1 = 50; *N2 = 50; *N3 = -50; *N4 = -50;
-          DownStt = 1;
-        } 
+          DownStt = 1; 
       }
        else{
         if ( DownStt != 0){
@@ -56,12 +52,10 @@ void ButtonDown(int *N1, int* N2, int*N3, int*N4){
 //Handling Button Right-------------------------------------------
 void ButtonRight(int *N1, int* N2, int*N3, int*N4){
         if (PS4.getButtonPress(RIGHT)) {
-          Serial.print(F("\r\nRight"));
+          //Serial.print(F("\r\nRight"));
           PS4.setLed(Blue);
-        if ( RightStt != 1){
           *N1 = 50; *N2 = -50; *N3 = -50; *N4 = 50;          
-          RightStt = 1;
-        }   
+          RightStt = 1;  
       }
 
       else {
@@ -75,12 +69,10 @@ void ButtonRight(int *N1, int* N2, int*N3, int*N4){
 //Handling Button Left--------------------------------------------
 void ButtonLeft(int *N1, int* N2, int*N3, int*N4){
         if (PS4.getButtonPress(LEFT)) {
-        Serial.print(F("\r\nLeft"));
+        //Serial.print(F("\r\nLeft"));
         PS4.setLed(Green);
-        if ( LeftStt != 1){
           *N1 = -50; *N2 = 50; *N3 = 50; *N4 = -50;          
           LeftStt = 1;
-        }
       }
       else {
         if( LeftStt != 0){
@@ -129,7 +121,7 @@ void CircleButton(){
 //Handling Button Cross-------------------------------------------
 void CrossButton(int *N1, int* N2, int*N3, int*N4){
         if (PS4.getButtonPress(CROSS)) {
-          Serial.print(F("\r\nCross"));
+          //Serial.print(F("\r\nCross"));
           PS4.setLedFlash(10, 10); // Set it to blink rapidly
          //while ( CrStt != 1){
           //Serial.print(F("\r\nCross"));
