@@ -92,7 +92,7 @@ void ButtonLeft(int *N1, int* N2, int*N3, int*N4){
 
 //Handling Button Triangle----------------------------------------
 void TriangleButton(){
-        if (PS4.getButtonPress(TRIANGLE)) {
+        /*if (PS4.getButtonPress(TRIANGLE)) {
           Serial.print(F("\r\nTraingle"));
         PS4.setRumbleOn(RumbleLow);
         while ( TriStt != 1){
@@ -105,12 +105,12 @@ void TriangleButton(){
          SetSpeed(0,0,0,0,2000);
           TriStt = 0;
         }
-      }
+      }*/
 }
 
 //Handling Button Circle------------------------------------------
 void CircleButton(){
-        if (PS4.getButtonPress(CIRCLE)) {
+        /*if (PS4.getButtonPress(CIRCLE)) {
           Serial.print(F("\r\nCircle"));
         PS4.setRumbleOn(RumbleHigh);
         while( CirStt != 1){
@@ -123,32 +123,31 @@ void CircleButton(){
          SetSpeed(0,0,0,0,2000);
           CirStt = 0;
         }
-      }   
+      }*/  
 }
 
 //Handling Button Cross-------------------------------------------
 void CrossButton(int *N1, int* N2, int*N3, int*N4){
         if (PS4.getButtonPress(CROSS)) {
           Serial.print(F("\r\nCross"));
-        //PS4.setLedFlash(10, 10); // Set it to blink rapidly
-        while ( CrStt != 1){
-          Serial.print(F("\r\nCross"));
+          PS4.setLedFlash(10, 10); // Set it to blink rapidly
+         //while ( CrStt != 1){
+          //Serial.print(F("\r\nCross"));
           *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;
-          CrStt = 1;
+          //CrStt = 1;
+       // }
         }
-      }
-      else {
+     /*else {
         while ( CrStt != 0){
           *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;
           CrStt = 0;
         }
-      }  
+      }  */
 }
 
 //Handling Button Square------------------------------------------
-void SquareButton(){
-  
-      if (PS4.getButtonPress(SQUARE)) {
+void SquareButton(){ 
+      /*if (PS4.getButtonPress(SQUARE)) {
          Serial.print(F("\r\nSquare"));
         PS4.setLedFlash(0, 0); // Turn off blinking
         while ( SqrStt != 1){
@@ -161,7 +160,7 @@ void SquareButton(){
           SetSpeed(0,0,0,0,2000);
           SqrStt = 0;
         }   
-      }
+      }*/
 }
 //Handling Button L2----------------------------------------------
 void L2Button(){
@@ -183,9 +182,9 @@ void L2Button(){
 
 //Handling Button R2----------------------------------------------
 void R2Button(){
-        if (PS4.getButtonPress(R2)) {
+        /*if (PS4.getButtonPress(R2)) {
           Serial.print(F("\r\nR2: "));
-      Serial.print(PS4.getAnalogButton(R2));
+          Serial.print(PS4.getAnalogButton(R2));
         while ( R2Stt != 1){      
           SetSpeed(-50,-50,-50,-50,2000);   
           R2Stt = 1;
@@ -196,7 +195,7 @@ void R2Button(){
          SetSpeed(0,0,0,0,2000);
           R2Stt = 0;
         }
-      }
+      }*/
 }
 
 //Process Joysticks data------------------------------------------
@@ -218,16 +217,17 @@ void JoystickConverter(int x, int y, int *a, int *b, int *c, int *d){
 void LeftJoystick(int *N1, int* N2, int*N3, int*N4){
   int x = PS4.getAnalogHat(LeftHatX), y = PS4.getAnalogHat(LeftHatY);
   if (x > 137 || x < 117 || y > 137 || y < 117){
-      Serial.print(F("\r\nLeftHatX: "));
+      /*Serial.print(F("\r\nLeftHatX: "));
       Serial.print(x);
       Serial.print(F("\tLeftHatY: "));
-      Serial.print(y);
+      Serial.print(y);*/
       JoystickConverter(x,y,N4,N2,N1,N3);
       LeftJStt = 1;
+      //Serial.print(F("\r\n")); Serial.print(*N1); Serial.print(F("\t"))  ;    Serial.print(*N2);    Serial.print(F("\t")) ; Serial.print(*N3);   Serial.print(F("\t"));    Serial.print(*N4);
       }
       else {
         if( LeftJStt != 0){
-          SetSpeed(0,0,0,0,2000);       
+          *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;
           LeftJStt = 0;
         }
       }
@@ -235,13 +235,14 @@ void LeftJoystick(int *N1, int* N2, int*N3, int*N4){
 void RightJoystick(int *N1, int* N2, int*N3, int*N4){
   int x = PS4.getAnalogHat(RightHatX), y = PS4.getAnalogHat(RightHatY);
   if (x > 137 || x < 117 || y > 137 || y < 117){
-      Serial.print(F("\r\nRightHatX: "));
+      /*Serial.print(F("\r\nRightHatX: "));
       Serial.print(x);
       Serial.print(F("\tRightHatY: "));
-      Serial.print(y);
+      Serial.print(y);*/
       JoystickConverter(x,y,N4,N2,N1,N3);
       RightJStt = 1;
-      }
+
+  }    
       else {
         if( RightJStt != 0){
           *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;

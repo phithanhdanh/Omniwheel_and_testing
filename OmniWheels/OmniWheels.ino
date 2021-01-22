@@ -21,9 +21,11 @@ PS4BT PS4(&Btd);
 #include "Decorations.h"
 #include "Wheels.h"
 #include "Buttons.h"
+int previous = millis(), current;  
+//int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
+bool motorOn = 1;
 
 void setup() {
-  SetSpeed(0,0,0,0,20000);
   Serial.begin(115200);
   mySerial.begin(19200);   // set the data rate for the SoftwareSerial port
   pinMode(10, OUTPUT);          // sets the digital pin 13 as output
@@ -40,11 +42,12 @@ void setup() {
 void loop() {
   
   //Dualshock4 handling----------------------
-  Usb.Task();  
-  if (PS4.connected()) {
-    int N1=0,N2=0,N3=0,N4=0,accelerate=20000;
-    LeftJoystick(&N1,&N2,&N3,&N4);
-    RightJoystick(&N1,&N2,&N3,&N4);
+  Usb.Task();
+  current = millis();
+  int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
+  if (PS4.connected()) {    
+      LeftJoystick(&N1,&N2,&N3,&N4);
+      RightJoystick(&N1,&N2,&N3,&N4);
     if (PS4.getButtonClick(PS)) {
       Serial.print(F("\r\nPS"));
       PS4.disconnect();
@@ -55,13 +58,12 @@ void loop() {
       ButtonRight(&N1,&N2,&N3,&N4);
       ButtonLeft(&N1,&N2,&N3,&N4);
       CrossButton(&N1,&N2,&N3,&N4);
-      L2Button();
+      //L2Button();
     }
-    if (N1 || N2 || N3 || N4) accelerate=2000;
-    else accelerate = 20000;
-    SetSpeed(N1,N2,N3,N4,accelerate);
+    if (N1 || N2 || N3 || N4) {SetSpeed(N1,N2,N3,N4,accelerate); motorOn = 1;}
+    else if (motorOn) {SetSpeedNow(N1,N2,N3,N4,20000); motorOn = 0;}  
   }
-  else SetSpeed(0,0,0,0,20000);
+  else if (motorOn) {SetSpeedNow(0,0,0,0,20000); motorOn = 0;}
   //-----------------------------------------
   
 }
