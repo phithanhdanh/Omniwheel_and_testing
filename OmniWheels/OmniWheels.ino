@@ -18,23 +18,14 @@ BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 //Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
 PS4BT PS4(&Btd);
 
-/*#include <PS4USB.h>
-
-// Satisfy the IDE, which needs to see the include statment in the ino too.
-#ifdef dobogusinclude
-#include <spi4teensy3.h>
-#endif
-#include <SPI.h>
-
-USB Usb;
-PS4USB PS4(&Usb);*/
-
 #include "Decorations.h"
 #include "Wheels.h"
 #include "Buttons.h"
+int previous = millis(), current;  
+//int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
+bool motorOn = 1;
 
 void setup() {
-  SetSpeed(0,0,0,0,20000);
   Serial.begin(115200);
   mySerial.begin(19200);   // set the data rate for the SoftwareSerial port
   pinMode(10, OUTPUT);          // sets the digital pin 13 as output
@@ -47,28 +38,33 @@ void setup() {
   }
   Serial.print(F("\r\nPS4 Bluetooth Library Started"));
 }
+  int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
 
 void loop() {
   
   //Dualshock4 handling----------------------
-  Usb.Task();  
-  if (PS4.connected()) {
-    LeftJoystick();
-    RightJoystick();
+  Usb.Task();
+  current = millis();
+  //int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
+  if (PS4.connected()) {    
+      LeftJoystick(&N1,&N2,&N3,&N4);
+      RightJoystick(&N1,&N2,&N3,&N4);
     if (PS4.getButtonClick(PS)) {
       Serial.print(F("\r\nPS"));
       PS4.disconnect();
     }
     else{
-      ButtonUp();
-      ButtonDown();
-      ButtonRight();
-      ButtonLeft();
-      L2Button();
-      CrossButton();
+      ButtonUp(&N1,&N2,&N3,&N4);
+      ButtonDown(&N1,&N2,&N3,&N4);
+      ButtonRight(&N1,&N2,&N3,&N4);
+      ButtonLeft(&N1,&N2,&N3,&N4);
+      CrossButton(&N1,&N2,&N3,&N4);
+      //L2Button();
     }
+    if (N1 || N2 || N3 || N4) {SetSpeed(N1,N2,N3,N4,accelerate); motorOn = 1;}
+    else if (motorOn) {SetSpeedNow(N1,N2,N3,N4,20000); motorOn = 0;}  
   }
-  else SetSpeed(0,0,0,0,20000);
+  else if (motorOn) {SetSpeedNow(0,0,0,0,20000); motorOn = 0;}
   //-----------------------------------------
   
 }
