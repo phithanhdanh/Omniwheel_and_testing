@@ -1,5 +1,4 @@
 
-#include <math.h>
 
 bool printAngle, printTouch;
 uint8_t oldL2Value, oldR2Value;
@@ -156,7 +155,7 @@ void SquareButton(){
 }
 //Handling Button L2----------------------------------------------
 void L2Button(){
-       if (PS4.getButtonPress(L2)) {
+       /*if (PS4.getButtonPress(L2)) {
         Serial.print(F("\r\nL2: "));
         Serial.print(PS4.getAnalogButton(L2));
         while ( L2Stt != 1){      
@@ -169,7 +168,7 @@ void L2Button(){
           SetSpeed(0,0,0,0,2000);
           L2Stt = 0;
         }
-      }
+      }*/
 }
 
 //Handling Button R2----------------------------------------------
@@ -192,11 +191,13 @@ void R2Button(){
 
 //Process Joysticks data------------------------------------------
 int scaled(float in, float maxin, float maxout){
-  int out = round(in*maxout/maxin);
-    if (out > maxout){
-        out = maxout;
+  float out = in*maxout/maxin;
+  int rounded = (int) out;
+  if (out - rounded >= 0.5) rounded++;
+    if (rounded > maxout){
+        rounded = (int) maxout;
     }
-  return out;
+  return rounded;
 }
 
 void JoystickConverter(int x, int y, int *a, int *b, int *c, int *d){
