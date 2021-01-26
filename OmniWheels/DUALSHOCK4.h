@@ -1,22 +1,34 @@
+#if 1
 #ifndef DUALSHOCK4_H
 #define DUALSHOCK4_H
 
-class DUALSHOCK4 {
+#include <PS4BT.h>
+#include <usbhub.h>
 
-  public:
+// Satisfy the IDE, which needs to see the include statment in the ino too.
+#ifdef dobogusinclude
+#include <spi4teensy3.h>
+#endif
+
+#include <SPI.h>
+
+class DUALSHOCK4 {
   
     #define MAX_MOTOR 100
+    
+  public:
     
     DUALSHOCK4(int,int*);                            // * constructor (number of wheels, Speed array)
     DUALSHOCK4(int,int*,int,int*);                   // * constructor (..., number of pickup engines, Pick_up array)
     DUALSHOCK4(int,int*,int,int*,int,int*);          // * constructor (..., number of load engines, Load array)
     DUALSHOCK4(int,int*,int,int*,int,int*,int,int*); // * constructor (..., number of shooting engines, Shoot array)
 
+    void Initialize();
     /* Functions to use with PS4 Bluetooth library: */
-    void task();
-    bool Connected();
+    void Task();
+    bool connected();
     bool PSClicked();
-    void Discontect();
+    void disconnect();
     
     /* Functions to get data from the Dualshock: */
     void Up();
@@ -38,7 +50,6 @@ class DUALSHOCK4 {
   
   private:
   
-    bool serial;
     int _wheels, _pickups, _loads, _shoots; // * number of wheels, pickup,... (sizes of arrays)    
     int *wheel, *pickup, *load, *shoot;     // speed arrays (declared as pointer)
     static int blank[MAX_MOTOR];
@@ -52,7 +63,12 @@ class DUALSHOCK4 {
     void AnalogeStickConvert(int,int,int*,int*,int*,int*);
     int scaled(float,float,float);
 
+    USB *Usb;
+    BTD *Btd;
+    PS4BT *PS4;
+
 };
 
 
+#endif
 #endif
