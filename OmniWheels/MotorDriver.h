@@ -25,7 +25,7 @@ class MotorDriver{
     int *accelerate;            // * pointer to acceleration variable. 
     int n;                      // * number of motors.   
 
-    void ScaleSpeed(int*,int);  // * Increase speed of specifed motor.
+    void ScaleSpeed(int*,double);  // * Increase speed of specifed motor.
 
     SoftwareSerial *DriverSerial; // * Pointer to object of class SofwareSerial.
 

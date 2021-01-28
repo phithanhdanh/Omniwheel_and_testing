@@ -17,9 +17,6 @@ BTD Btd(&Usb); // You have to create the Bluetooth Dongle instance like so
 //Thay lenh phia tren bang lenh nay sau khi ket noi thanh cong, nap lai code, lan sau chi can nhan nut PS de ket noi.
 PS4BT PS4(&Btd);
 
-//#include <SoftwareSerial.h>
-//SoftwareSerial mySerial(12, 13); //Define PIN12 & PIN13 as software UART
-
 //----------Library testing-----------//
 int n = 4;
 int Speed[] = {0, 0, 0, 0}, brake[] = {0,0,0,0};
@@ -34,19 +31,18 @@ MotorDriver omni(n, Speed, &acceleration,12,13);
 DUALSHOCK4 PS4(4,Speed);
 //------------------------------------*/
 
-#include "Decorations.h"
-//#include "Wheels.h"
 #include "Buttons.h"
-//int N1=0,N2=0,N3=0,N4=0,accelerate=2000;
 bool motorOn = 1;
 
 void setup() {
   Serial.begin(115200);
-  //mySerial.begin(19200);   // set the data rate for the SoftwareSerial port
-  omni.Initialize(19200);
-#if !defined(__MIPSEL__)
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
-#endif
+  omni.Initialize(19200);     // set the data rate for the SoftwareSerial port
+  
+  #if !defined(__MIPSEL__)
+    while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  #endif
+  
+  //PS4.Initialize();
   if (Usb.Init() == -1) {
     Serial.print(F("\r\nOSC did not start"));
     while (1); // Halt
@@ -60,35 +56,36 @@ void loop() {
   
   //Dualshock4 handling----------------------
   Usb.Task();
-  //int N1=0,N2=0,N3=0,N4=0,acceleration=2000;
+  //Serial.print(F("\nAttempt1\n"));
+  //PS4.Task();
   if (PS4.connected()) {   
       LeftJoystick(N1,N2,N3,N4);
       //RightJoystick(N1,N2,N3,N4);
-    if (PS4.getButtonClick(PS)) {
-      Serial.print(F("\r\nPS"));
-      PS4.disconnect();
-    }
-    else{
-      /*ButtonUp(&N1,&N2,&N3,&N4);
-      ButtonDown(&N1,&N2,&N3,&N4);
-      ButtonRight(&N1,&N2,&N3,&N4);
-      ButtonLeft(&N1,&N2,&N3,&N4);
-      CrossButton(&N1,&N2,&N3,&N4);*/
+      //PS4.LAnalogueStick();
+      if (PS4.getButtonClick(PS)) {
+      //if (PS4.PSClicked()){
+        if (Serial) Serial.print(F("\r\nPS"));
+        PS4.disconnect();
+      }
+      /*else{
+      ButtonUp(N1,N2,N3,N4);
+      ButtonDown(N1,N2,N3,N4);
+      ButtonRight(N1,N2,N3,N4);
+      ButtonLeft(N1,N2,N3,N4);
+      CrossButton(N1,N2,N3,N4);
       //L2Button();
-    }
+      }*/ 
+      //Serial.print(F("\nAttempt3"));
     if (*N1 || *N2 || *N3 || *N4) {
-      //SetSpeed(*N1,*N2,*N3,*N4,acceleration);
       omni.SetSpeed(); 
       motorOn = 1;
     }
     else if (motorOn) {
-      //SetSpeedNow(*N1,*N2,*N3,*N4,20000); 
       omni.DirectSet(brake,20000);
       motorOn = 0;
     }  
   }
   else if (motorOn) {
-    //SetSpeedNow(0,0,0,0,20000); 
     omni.DirectSet(brake,20000);
     motorOn = 0;
   }

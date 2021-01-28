@@ -1,4 +1,4 @@
-#if 1
+#if 0
 #ifndef DUALSHOCK4_H
 #define DUALSHOCK4_H
 
@@ -52,7 +52,7 @@ class DUALSHOCK4 {
   
     int _wheels, _pickups, _loads, _shoots; // * number of wheels, pickup,... (sizes of arrays)    
     int *wheel, *pickup, *load, *shoot;     // speed arrays (declared as pointer)
-    static int blank[MAX_MOTOR];
+    int blank[MAX_MOTOR]={0};
     /* Buttons status (currently pressed or not): */
     bool UpStt, DownStt, LeftStt, RightStt;
     bool TriStt, CirStt, CrStt, SqrStt;

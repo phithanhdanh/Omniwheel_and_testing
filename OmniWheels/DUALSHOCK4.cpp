@@ -6,7 +6,7 @@
  * 
  * Library required: USB Host Shield 2.0
  * ************************************************************/
-#if 1
+#if 0
 #if ARDUINO >= 100
   #include "Arduino.h"
 #else
@@ -58,6 +58,7 @@ void DUALSHOCK4::Initialize(){
 
 //----------------------------------------------------------------------------------------------
 void DUALSHOCK4::Task() {
+  //Serial.print(F("Attemmpt2"));
   Usb->Task();
 }
 bool DUALSHOCK4::connected() {
