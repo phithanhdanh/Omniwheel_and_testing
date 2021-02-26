@@ -19,7 +19,7 @@ class MotorDriver{
   private:
   
     bool set[MAX_NUM];          // * array of motors' status (set or not set).
-    int currentmillis, previousmillis;  // * we use these to send data to Drivers continuously.
+    unsigned long currentmillis, previousmillis;  // * we use these to send data to Drivers continuously.
     String data;                // * objest String. Contain the command string we need to send to Drivers.
     int* motor;                 // * pointer to the Speed array. 
     int *accelerate;            // * pointer to acceleration variable. 

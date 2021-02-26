@@ -1,4 +1,8 @@
-bool printAngle, printTouch;
+//Banh xe quay theo chieu kim dong ho la duong (+);
+//Banh xe N1-trai duoi; N2-trai tren; N3-phai tren; N4-phai duoi;
+
+
+bool printAngle, printTouch; 
 uint8_t oldL2Value, oldR2Value;
 bool UpStt, DownStt, LeftStt, RightStt;
 bool TriStt, CirStt, CrStt, SqrStt;
@@ -151,11 +155,33 @@ void SquareButton(){
 }
 
 //Handling L1 Button----------------------------------------------
-void L1Button(){
+void L1Button(int *N1, int* N2, int*N3, int*N4){
+  if (PS4.getButtonPress(L1)) {
+    //if (Serial) Serial.print(F("\r\nL1"));
+    *N1 = *N2 = *N3 = *N4 = PI;          
+    L1Stt = 1;
+  }
+  else {
+    if (L1Stt != 0){
+      *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;
+      L1Stt = 0;
+    }
+  }
 }
 
 //Handling R1 Button----------------------------------------------
-void R1Button(){
+void R1Button(int *N1, int* N2, int*N3, int*N4){
+  if (PS4.getButtonPress(R1)) {
+    //if (Serial) Serial.print(F("\r\nR1"));
+    *N1 = *N2 = *N3 = *N4 = -PI;          
+    R1Stt = 1;
+  }
+  else {
+    if (R1Stt != 0){
+      *N1 = 0; *N2 = 0; *N3 = 0; *N4 = 0;
+      R1Stt = 0;
+    }
+  }
 }
 
 //Handling L3 Button----------------------------------------------

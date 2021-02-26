@@ -57,10 +57,16 @@ void loop() {
       PS4.disconnect();
     }
     else {
+      if (PS4.getButtonClick(OPTIONS)) {
+        Serial.print(F("\nBattery level (%): "));
+        Serial.print(PS4.getBatteryLevel());
+      }
       UpButton(N1,N2,N3,N4);
       DownButton(N1,N2,N3,N4);
       RightButton(N1,N2,N3,N4);
       LeftButton(N1,N2,N3,N4);
+      R1Button(N1,N2,N3,N4);
+      L1Button(N1,N2,N3,N4);     
     }
     if (*N1 || *N2 || *N3 || *N4) {
       omni.SetSpeed(); 

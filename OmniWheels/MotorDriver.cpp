@@ -6,7 +6,20 @@
  * 
  * Used PIN: 12, 13 (RX, TX)
  * ************************************************************/
- 
+
+/*  Các thông số  |                   Ý nghĩa
+ * --------------------------------------------------------------------
+ *      Nx        | x là địa chỉ của driver (x=0 là địa chỉ Broadcast)
+ *      Py        | y là vị trí muốn điều khiển đến (rad)
+ *      Vz        | z là vận tốc (rad/s)
+ *      Aj        | j là gia tốc (rad/s2)
+ *      G         | Lấy vị hiện tại, driver sẽ truyền UART giá trị của vị trí.
+ *      S         | Dừng
+ *      r         | Reset vị trí
+ *      Mx        | Thay đổi mode hoạt động, x = mode
+ *      Tx        | Thay đổi duty cycle 
+ */
+
 #if ARDUINO >= 100
   #include "Arduino.h"
 #else
@@ -46,7 +59,7 @@ void MotorDriver::SetSpeed(){
         if (motor[i] != prespeed[i]) {
           data = String("{N" + String(i+1) + "  V" + String(motor[i]) + s);
           DriverSerial->println(data);
-          if (Serial) Serial.println(String("\n\n\n\n\n\n\n\n\n\n::::::::::::::::::::::::::" + data + "::::::::::::::::::::::::::\n\n\n\n\n\n\n\n\n"));
+          //if (Serial) Serial.println(String("\n\n\n\n\n\n\n\n\n\n::::::::::::::::::::::::::" + data + "::::::::::::::::::::::::::\n\n\n\n\n\n\n\n\n"));
           previousmillis = millis();
           prespeed[i] = motor[i];
           break;
@@ -63,7 +76,8 @@ void MotorDriver::DirectSet(int* newSpeed, int newAccelerate){
   ScaleSpeed(&newSpeed[0],1.05);
   String s = String(" A"+String(newAccelerate)+"}");
   for (int i=0; i<n; i++) {
-    data = String("{N" + String(i+1) + "  V" + String(newSpeed[i]) + s);
+    /*if (newSpeed[i])*/ data = String("{N" + String(i+1) + "  V" + String(newSpeed[i]) + s);
+    //else data = String("{S}");//String(" {N" + String(i+1) + " S}");
     while ((int)(currentmillis - previousmillis) < DELAY) currentmillis = millis();  // * pause for DELAY amount of time before sending new signal to drivers.
     DriverSerial->println(data);
     if (Serial) Serial.println(String("\n\n\n\n\n\n\n\n\n\n::::::::::::::::::::::::::" + data + "::::::::::::::::::::::::::\n\n\n\n\n\n\n\n\n"));
